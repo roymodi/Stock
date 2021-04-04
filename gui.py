@@ -14,6 +14,7 @@ import datetime
 import Pivot_point
 from Swing_20days import Swing_20days
 import Turtle_trading
+import SuperBreakout
 
 window_0 = tk.Tk()
 window_0.title('Stock technical analysis')
@@ -47,12 +48,14 @@ def trading(df,fname,data):
     filename = create_path()+"\\"+fname
     name = create_path()+"\\"+"Swing_trading___"+fname
     name_ = create_path()+"\\"+"Turtle_trading__"+fname
+    name_sb = create_path()+"\\"+"Super_Breakout"+fname
     ls_cp = float((str(df['Close'].iloc[-1])).replace(',',''))
     sw = Swing_20days(df)
     sw_val = sw.swing(ls_cp)
     position = int(rdb1.get())
     tt = Turtle_trading.Turtle(df)
     tutd = tt.turtle(ls_cp)
+    sb = SuperBreakout.SuperBreakout(df)
     if position == 1:
         if sw_val != False:
             with open(name,'a')as f:
@@ -60,6 +63,11 @@ def trading(df,fname,data):
         else:
             pass
         if tutd != False:
+            with open(name_,'a')as fi:
+                fi.write(data)
+        else:
+            pass
+        if sb != False:
             with open(name_,'a')as fi:
                 fi.write(data)
         else:
@@ -99,6 +107,8 @@ def getdata(df,preday=0, totalday=3): # preday=0 means twomorrow prediction
     sw_val = sw.swing(ls_cp)
     tt = Turtle_trading.Turtle(df)
     tutd = tt.turtle(ls_cp)
+    sb = SuperBreakout.SuperBreakout(df)
+    bk = sb.breakout()
     rt = 'Last_Open_price: '+str(round((ls_op),2))+',   Last_Close_price: '+\
     str(round((ls_cp),2))+'\n'+'Last_High_price:  '+str(round((ls_hi),2))+\
     '   Last_Low_price:  '+str(round((ls_lo),2))+'\n\n'+voldata1+voldata2+\
@@ -106,7 +116,7 @@ def getdata(df,preday=0, totalday=3): # preday=0 means twomorrow prediction
     'EMA(8): '+str(ema8)+',  EMA(20): '+str(ema20)+',  EMA(50): '+str(ema50)+"  200_DMA: "+str(dma)+\
     ',   RSI: '+str(rsi_)+'\n\n'+'DarvasBox: '+str(db_)+'\n\n'+'Bollinger_bands: '+\
     str(b_bands)+'\n\n'+'Macd: '+macd_+'\n'+'Market_immotion :'+m_i+'\n\nSwing_trading: \n'+\
-    str(sw_val)+'\n\n'+"Turtle_trading: \n"+str(tutd)
+    str(sw_val)+'\n\n'+"Turtle_trading: \n"+str(tutd)+'\n\n'+"Super_Breakout: \n"+str(bk)
     return rt
 
 def hisdata(x):
