@@ -45,10 +45,11 @@ def create_path():
     return path
 
 def trading(df,fname,data):
+    dfname = fname.replace(fname[-6],'')
     filename = create_path()+"\\"+fname
-    name = create_path()+"\\"+"Swing_trading___"+fname
-    name_ = create_path()+"\\"+"Turtle_trading__"+fname
-    name_sb = create_path()+"\\"+"Super_Breakout"+fname
+    name = create_path()+"\\"+"Swing_trading___"+dfname
+    name_ = create_path()+"\\"+"Turtle_trading__"+dfname
+    name_sb = create_path()+"\\"+"Super_Breakout"+dfname
     ls_cp = float((str(df['Close'].iloc[-1])).replace(',',''))
     sw = Swing_20days(df)
     sw_val = sw.swing(ls_cp)
@@ -141,6 +142,7 @@ def suggestion(df):
     days = db.days()
     fst = days[0]
     sec = days[1]
+    print(days)
     if (fst > sec):
         re = fst + sec
     else:
@@ -317,7 +319,7 @@ rbb_2.pack(side= LEFT)
 
 #radiobutton_2
 rdb1 = tk.IntVar()
-rbb_3 = tk.Radiobutton(window_2, text= 'Swing_Delivery', variable= rdb1, value= 1, command= radiobtn)
+rbb_3 = tk.Radiobutton(window_2, text= 'Delivery', variable= rdb1, value= 1, command= radiobtn)
 rbb_3.pack(side= LEFT)
 rbb_4 = tk.Radiobutton(window_2, text= 'Intraday', variable= rdb1, value= 0, command= radiobtn)
 rbb_4.pack(side= RIGHT)
