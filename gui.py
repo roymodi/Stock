@@ -56,6 +56,7 @@ def trading(df,fname,data):
     tt = Turtle_trading.Turtle(df)
     tutd = tt.turtle(ls_cp)
     sb = SuperBreakout.SuperBreakout(df)
+    bo = sb.breakout()
     if position == 1:
         if sw_val != None:
             with open(name,'a')as f:
@@ -67,8 +68,8 @@ def trading(df,fname,data):
                 fi.write(data)
         else:
             pass
-        if sb != None:
-            with open(name_,'a')as fi:
+        if bo != None:
+            with open(name_sb,'a')as fi:
                 fi.write(data)
         else:
             pass
