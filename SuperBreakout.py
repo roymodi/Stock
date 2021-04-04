@@ -30,3 +30,4 @@ class SuperBreakout:
                 dt = False
         except:
             pass
+        return dt
