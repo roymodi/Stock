@@ -22,5 +22,5 @@ class Swing_20days:
         if Close_price >= high_max and Close_price >= dma_200:
             rt = dict(High_20_days= high_max,Stop_loss_20_days_low= low_min,DMA_200=dma_200,Last_Close_price=Close_price)
         else:
-            rt = False
+            rt = None
         return rt

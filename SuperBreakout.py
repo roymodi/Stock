@@ -27,7 +27,7 @@ class SuperBreakout:
                 dt2 = dict(DMA_5=d5,DMA_10=d10,DMA_15=d15,DMA_50=d50,DMA_100=d100)
                 dt = dict(Main=dt1,Dma=dt2)
             else:
-                dt = False
+                dt = None
         except:
             pass
         return dt

@@ -57,17 +57,17 @@ def trading(df,fname,data):
     tutd = tt.turtle(ls_cp)
     sb = SuperBreakout.SuperBreakout(df)
     if position == 1:
-        if sw_val != False:
+        if sw_val != None:
             with open(name,'a')as f:
                 f.write(data)
         else:
             pass
-        if tutd != False:
+        if tutd != None:
             with open(name_,'a')as fi:
                 fi.write(data)
         else:
             pass
-        if sb != False:
+        if sb != None:
             with open(name_,'a')as fi:
                 fi.write(data)
         else:
