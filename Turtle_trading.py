@@ -36,7 +36,7 @@ class Turtle:
         high20 = high_max-per_20
         high10 = high_max-per_10
         if (current_price<=high10) and (current_price>=high20) and (low_min < self.lst_low) and (current_price >= dma_200):
-            rt = dict(High_55_days= high_max,Stop_loss_10_days_low= low_min,DMA_200=dma_200,DMA_50=dma_50,Last_Close_price=current_price)
+            rt = dict(High_55_days= high_max,Stop_loss_20_days_low= low_min,DMA_200=dma_200,DMA_50=dma_50,Last_Close_price=current_price)
         else:
             rt = None
         return rt

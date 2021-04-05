@@ -142,7 +142,6 @@ def suggestion(df):
     days = db.days()
     fst = days[0]
     sec = days[1]
-    print(days)
     if (fst > sec):
         re = fst + sec
     else:
