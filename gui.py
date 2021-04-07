@@ -44,6 +44,10 @@ def create_path():
         pass
     return path
 
+def writefile(fname,data):
+    with open(fname,'a')as op:
+        op.write(data)
+
 def trading(df,fname,data):
     dfname = fname.replace(fname[-6],'')
     filename = create_path()+"\\"+fname
@@ -60,23 +64,19 @@ def trading(df,fname,data):
     bo = sb.breakout()
     if position == 1:
         if sw_val != None:
-            with open(name,'a')as f:
-                f.write(data)
+            writefile(name,data)
         else:
             pass
         if tutd != None:
-            with open(name_,'a')as fi:
-                fi.write(data)
+            writefile(name_,data)
         else:
             pass
         if bo != None:
-            with open(name_sb,'a')as fi:
-                fi.write(data)
+            writefile(name_sb,data)
         else:
             pass
     else:
-        with open(filename,'a')as ni:
-            ni.write(data)
+        writefile(filename,data)
     
 
 def getdata(df,preday=0, totalday=3): # preday=0 means twomorrow prediction
@@ -121,13 +121,17 @@ def getdata(df,preday=0, totalday=3): # preday=0 means twomorrow prediction
     str(sw_val)+'\n\n'+"Turtle_trading: \n"+str(tutd)+'\n\n'+"Super_Breakout: \n"+str(bk)
     return rt
 
-def hisdata(x):
+def collectdate():
+    # collect date one year before
     dt = datetime.datetime.now()
-    yr = str((int(dt.strftime("%Y")))-1)
+    yr = str((int(dt.strftime("%Y")))-1) # 1 == one year
     mo = str(dt.strftime("%m"))
     dy = str(dt.strftime("%d"))
     newdate = str(dy+','+mo+','+yr)
+    return newdate
 
+def hisdata(x):
+    newdate = collectdate()
     yf = YahooIndia()
     ns = Nse.NSE()
     try:
@@ -214,6 +218,32 @@ def main(file,nsclp,tt):
         progress['value']=round((((filen-count)+1)*(100/filen)),2)
         window_0.update_idletasks()
 
+# nifty index main funtion
+def nifty_index(ticket):
+    spinbox = int(spbox_1.get())
+    pday = int(rdb.get())
+    newdate = collectdate()
+    fname = create_path()+"\\"+ticket
+    yf = YahooIndia()
+    if ticket == "BankNifty_nse_index":
+        df = yf.banknifty(newdate)
+        ttday = tigger(spinbox,df)
+        data = str(getdata(df,pday,ttday))
+        nd = data.split("\n")
+        newdata = nd[0]+"\n"+nd[1]+"\n\n"+nd[5]+"\n"+nd[6]+"\n"+nd[7]+"\n"+nd[8]+"\n\n"+nd[10]+"\n\n"+nd[14]+"\n\n"+nd[18]+"\n"+nd[19]
+        writefile(fname,newdata)
+    else:
+        df = yf.nifty(newdate)
+        ttday = tigger(spinbox,df)
+        data = str(getdata(df,pday,ttday))
+        nd = data.split("\n")
+        newdata = nd[0]+"\n"+nd[1]+"\n\n"+nd[5]+"\n"+nd[6]+"\n"+nd[7]+"\n"+nd[8]+"\n\n"+nd[10]+"\n\n"+nd[14]+"\n\n"+nd[18]+"\n"+nd[19]
+        writefile(fname,newdata)
+    # update prograss bar and value 
+    barlabl.insert(0,'100'+'%')
+    progress['value']=100
+    window_0.update_idletasks()
+
 # button funtion
 def button():
     nse = Nse.NseData()
@@ -271,7 +301,7 @@ def button():
         clp = None
         main(nallcls,clp,tt)
     else:
-        pass
+        nifty_index(tt)
 
 
 # frame 1
@@ -292,7 +322,9 @@ cmbo_1['values'] = (
     'Nifty_100_Company_stock_list',
     'Nifty_200_Company_stock_list',
     'Nifty_500_Company_stock_list',
-    'Nse_listed_all_Company_list'
+    'Nse_listed_all_Company_list',
+    'BankNifty_nse_index',
+    'Nifty50_nse_index'
     )
 cmbo_1.current(0)
 cmbo_1.pack(side=LEFT)
