@@ -1,5 +1,6 @@
 "creator BIDYUT PRAJAPATI"
 'pyinstaller --onefile gui.py'
+"pyinstaller gui.py -w --onefile"
 import os
 from os import terminal_size
 import tkinter as tk
@@ -65,18 +66,26 @@ def trading(df,fname,data):
     if position == 1:
         if sw_val != None:
             writefile(name,data)
+            # with open(name,'a')as f:
+            #     f.write(data)
         else:
             pass
         if tutd != None:
             writefile(name_,data)
+            # with open(name_,'a')as fi:
+            #     fi.write(data)
         else:
             pass
         if bo != None:
             writefile(name_sb,data)
+            # with open(name_sb,'a')as fi:
+            #     fi.write(data)
         else:
             pass
     else:
         writefile(filename,data)
+        # with open(filename,'a')as ni:
+        #     ni.write(data)
     
 
 def getdata(df,preday=0, totalday=3): # preday=0 means twomorrow prediction

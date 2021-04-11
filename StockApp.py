@@ -163,6 +163,14 @@ class AppLayout(Widget):
         else:
             rank = int(state)
         return rank
+    
+    def value_chake(self,value):
+        try:
+            val = int(value)
+        except:
+            val = 0
+        return val
+
     # main funtion
     def main(self,file,nsclp,tt):
         st = str(tt)
@@ -172,12 +180,12 @@ class AppLayout(Widget):
         now = thetime.replace(rmv,'')
         preday = 0 if self.ids.day.active == False else 1
         spinbox = self.spbox()
-        maximum = self.maximum.text
-        if maximum == 0 or type(maximum)== str:
+        maximum = self.value_chake(self.maximum.text)
+        if maximum == 0 :
             rnpv = 1000000000000000
         else:
             rnpv = int(maximum)
-        minmum = 0 if type(self.minimum.text)== str else int(self.minimum.text)
+        minmum = self.value_chake(self.minimum.text)
         filen = len(file)
         count = filen
         for x in file:
