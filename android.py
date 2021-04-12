@@ -15,136 +15,10 @@ import pickle
 import requests
 from fake_useragent import UserAgent
 from bs4 import BeautifulSoup
-import json
 import datetime
+from requests_html import HTMLSession
 
 Builder.load_file('stockapp.kv')
-
-class Webscraping:
-    def __init__(self):
-        self.proxy_url = "https://sslproxies.org/"
-
-    def create_path(self):
-        folder_name = 'Temp_file'  # this is folder name
-        current_dir = os.getcwd()  # this is path
-        path = os.path.join(current_dir, folder_name)  # create folder path
-        try:
-            os.mkdir(path)
-        except FileExistsError:
-            pass
-        return path
-    
-    def creatname(self,url):
-        nstr = (url.replace('https://','')).split('.')
-        try:
-            str1 = nstr[1]
-            # remove any spacial charater 
-            sr = (''.join(x for x in str1 if x.isalpha()))
-        except IndexError:
-            str1 = nstr[0]
-            sr = (''.join(x for x in str1 if x.isalpha()))
-        except :
-            str1 = "Defult"
-            sr = (''.join(x for x in str1 if x.isalpha()))
-        return sr
-
-    def proxy_generator(self,url):
-        response = requests.get(self.proxy_url)
-        soup = BeautifulSoup(response.content, 'html5lib')
-        proxy = ((list(map(lambda x: x[0] + ':' + x[1], list(
-            zip(map(lambda x: x.text, soup.findAll('td')[::8]), map(lambda x: x.text, soup.findAll('td')[1::8]))))))[0:100])
-        
-        jurl = self.creatname(url) + '.json'  # this is for create new name every time url change
-        pg_file = self.create_path() + '\\' + jurl
-        with open(pg_file, 'w')as op:
-            json.dump(proxy, op)
-
-    def jproxy(self,url):
-        flist = os.listdir(self.create_path())
-        jurl = self.creatname(url) + '.json'  # this is for create new name every time url change
-        jp_file = self.create_path() + '\\' + jurl
-        if jurl in flist:
-            with open(jp_file, 'r')as op:
-                jlod = json.load(op)
-        else:
-            self.proxy_generator(url)
-            with open(jp_file, 'r')as op:
-                jlod = json.load(op)
-        return jlod
-
-    def cokiere(self,url):
-        flist = os.listdir(self.create_path())
-        nurl = self.creatname(url)  # remove all spacial charater and number # this is for create new name every
-        # time url change
-        ck_nurl = self.create_path() + '\\' + nurl
-        if nurl in flist:
-            with open(ck_nurl, 'rb')as op:
-                jscokie = pickle.load(op)
-        else:
-            jscokie = None
-        return jscokie
-
-    def webpage(self,url):
-        ua = UserAgent()
-        jcoke = self.cokiere(url)
-        # this is for create new name if every time url change (string value return)
-        gjurl = self.creatname(url) + 'goodproxy.json' 
-        # this is temp_file in goodproxy.json file link
-        wp_gjurl = self.create_path() + '\\' + gjurl
-        # this is goodproxy.json file
-        file = os.listdir(self.create_path())
-        count = 0
-        while True:
-            hd = ua.random  # random user agent only
-            _ua = {'User-Agent': hd}
-            try:
-                try:
-                    with open(wp_gjurl, 'r')as op:
-                        old_proxy = json.load(op)
-                    res = requests.get(url, proxies=old_proxy, timeout=7, headers=_ua, cookies=jcoke)
-                    return res
-                    break
-
-                except FileNotFoundError:
-                    pxy = (self.jproxy(url))[count]
-                    proxy = dict(https=pxy)
-                    res = requests.get(url, proxies=proxy, timeout=7, headers=_ua, cookies=jcoke)
-                    with open(wp_gjurl, 'w')as op:
-                        json.dump(proxy, op)
-                    nurl = self.creatname(url)
-                    ck_nurl = self.create_path() + '\\' + nurl
-                    with open(ck_nurl, 'wb')as f:
-                        pickle.dump(res.cookies, f)
-                    if count ==100:
-                        count -=100
-                        self.proxy_generator(url)
-                    else:
-                        pass
-                    return res
-                    break
-
-                except :
-                    os.remove(wp_gjurl)
-                    pxy = (self.jproxy(url))[count]
-                    proxy = dict(https=pxy)
-                    res = requests.get(url, proxies=proxy, timeout=7, headers=_ua, cookies=jcoke)
-                    with open(wp_gjurl, 'w')as op:
-                        json.dump(proxy, op)
-                    nurl = self.creatname(url)
-                    ck_nurl = self.create_path() + '\\' + nurl
-                    with open(ck_nurl, 'wb')as f:
-                        pickle.dump(res.cookies, f)
-                    if count ==100:
-                        count -=100
-                        self.proxy_generator(url)
-                    else:
-                        pass
-                    return res
-                    break
-
-            except:
-                pass
-            count +=1
 
 class SuperBreakout:
     def __init__(self,dataframe):
@@ -271,77 +145,6 @@ class Pivotpoint:
         
         return rdt,rdtstr
 
-class YahooIndia:
-    def __init__(self):
-        self.purl = "https://in.finance.yahoo.com/quote/{0}?p={0}"
-        self.history_url = "https://query1.finance.yahoo.com/v7/finance/download/{0}?period1={dayfrom}&period2={timenow}&interval=1d&events=history"
-        self.bank_ = "https://query1.finance.yahoo.com/v7/finance/download/^NSEBANK?period1={dayfrom}&period2={timenow}&interval=1d&events=history&includeAdjustedClose=true"
-        self.nifty_ = "https://query1.finance.yahoo.com/v7/finance/download/^NSEI?period1={dayfrom}&period2={timenow}&interval=1d&events=history&includeAdjustedClose=true"
-                           
-    def web(self, url):
-        ws= Webscraping()
-        page= ws.webpage(url)
-        return page
-
-    def live_price(self, stock):
-        stock = (stock.upper()) + ".NS"
-        lp_page = self.web(self.purl.format(stock))
-        soup = BeautifulSoup(lp_page.content, 'html.parser')
-        path = soup.find(class_='Trsdu(0.3s) Fw(b) Fz(36px) Mb(-4px) D(ib)')
-        price = path.get_text()
-        return price
-
-    def stock_info(self, stock):
-        stock = (stock.upper()) + ".NS"
-        si_page = self.web(self.purl.format(stock))
-        soup = BeautifulSoup(si_page.content, 'html.parser')
-        left_tab = soup.find_all(class_='C($primaryColor) W(51%)')
-        right_tab = soup.find_all(class_='Ta(end) Fw(600) Lh(14px)')
-        key = []
-        value = []
-        for x in left_tab:
-            key.append((x.get_text()))
-        for y in right_tab:
-            value.append((y.get_text()))
-        info = dict(zip(key, value))
-        return info
-
-    def timenow(self):
-        now = datetime.utcnow()
-        tnow = str(int(now.timestamp()))
-        return tnow
-    
-    def dayfrom(self,dd_mm_yy):
-        date = (((dd_mm_yy.replace(",", " ")).replace("-", " ")).replace("/", " ")).split(" ")
-        dd = int(date[0])
-        mm = int(date[1])
-        yy = int(date[2])
-        hd_datetime = datetime(yy, mm, dd)
-        now = datetime.utcnow()
-        dt = now - hd_datetime
-        dfrom = str(int((now - dt).timestamp()))
-        return dfrom
-
-    def historydata(self, stock, dd_mm_yy):
-        stock = (stock.upper()) + ".NS"
-        file_ = self.web(self.history_url.format(stock, dayfrom=self.dayfrom(dd_mm_yy), timenow=self.timenow()))
-        dataframe = pd.read_csv(StringIO(file_.text), parse_dates=["Date"])
-        return dataframe
-    
-    def banknifty(self,dd_mm_yy):
-        file_ = self.web(self.bank_.format(dayfrom= self.dayfrom(dd_mm_yy), timenow= self.timenow()))
-        dataframe = pd.read_csv(StringIO(file_.text), parse_dates=["Date"])
-        return dataframe
-    
-    def nifty(self,dd_mm_yy):
-        file_ = self.web(self.nifty_.format(dayfrom= self.dayfrom(dd_mm_yy), timenow= self.timenow()))
-        dataframe = pd.read_csv(StringIO(file_.text), parse_dates=["Date"])
-        return dataframe
-        
-
-
-    
-
 
 class NSE:
     def __init__(self):
@@ -391,7 +194,7 @@ class NSE:
             os.mkdir(create_path)
         except FileExistsError:
             pass
-        h = self.useragent
+        h = self.useragent()
         flist = os.listdir(create_path) # file list
         file = create_path+'\\nseindia' # create file path with name
         if 'nseindia' in flist:
@@ -1033,12 +836,11 @@ class AppLayout(Widget):
     
     def hisdata(self,x):
         newdate = self.collectdate()
-        yf = YahooIndia()
         ns = NSE()
         try:
             df = ns.historydata(x,newdate)
         except ValueError:
-            df = yf.historydata(x,newdate)
+            df = ns.historydata(x,newdate)
         return df
     
     def suggestion(self,df):
@@ -1132,22 +934,41 @@ class AppLayout(Widget):
             self.ids.progress_bar.value = round((((filen-count)+1)*(100/filen)),2)
             self.ids.progress_label.text = f'{str(round((((filen-count)+1)*(100/filen))))}%'
 
+    def timenow(self):
+        now = datetime.datetime.utcnow()
+        tnow = str(int(now.timestamp()))
+        return tnow
+
+    def dayfrom(self,dd_mm_yy):
+        date = (((dd_mm_yy.replace(",", " ")).replace("-", " ")).replace("/", " ")).split(" ")
+        dd = int(date[0])
+        mm = int(date[1])
+        yy = int(date[2])
+        hd_datetime = datetime.datetime(yy, mm, dd)
+        now = datetime.datetime.utcnow()
+        dt = now - hd_datetime
+        dfrom = str(int((now - dt).timestamp()))
+        return dfrom
     # nifty index main funtion
     def nifty_index(self,ticket):
+        bank_ = "https://query1.finance.yahoo.com/v7/finance/download/^NSEBANK?period1={dayfrom}&period2={timenow}&interval=1d&events=history&includeAdjustedClose=true"
+        nifty_ = "https://query1.finance.yahoo.com/v7/finance/download/^NSEI?period1={dayfrom}&period2={timenow}&interval=1d&events=history&includeAdjustedClose=true"
+        session = HTMLSession()
         spinbox = self.spbox()
         pday = 0 if self.ids.day.active == False else 1
         newdate = self.collectdate()
-        fname = self.create_path()+"\\"+ticket
-        yf = YahooIndia()
+        fname = self.create_path()+"\\"+ticket+".txt"
         if ticket == "BankNifty_nse_index":
-            df = yf.banknifty(newdate)
+            page = session.get(bank_.format(dayfrom=self.dayfrom(newdate),timenow= self.timenow()))
+            df = pd.read_csv(StringIO(page.text), parse_dates=["Date"])
             ttday = self.tigger(spinbox,df)
             data = str(self.getdata(df,pday,ttday))
             nd = data.split("\n")
             newdata = nd[0]+"\n"+nd[1]+"\n\n"+nd[5]+"\n"+nd[6]+"\n"+nd[7]+"\n"+nd[8]+"\n\n"+nd[10]+"\n\n"+nd[14]+"\n\n"+nd[18]+"\n"+nd[19]
             self.writefile(fname,newdata)
         else:
-            df = yf.nifty(newdate)
+            page = session.get(nifty_.format(dayfrom=self.dayfrom(newdate),timenow= self.timenow()))
+            df = pd.read_csv(StringIO(page.text), parse_dates=["Date"])
             ttday = self.tigger(spinbox,df)
             data = str(self.getdata(df,pday,ttday))
             nd = data.split("\n")
