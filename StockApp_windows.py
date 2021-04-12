@@ -1210,7 +1210,7 @@ class MainFrame(tk.Frame):
         spinbox = int(self.spbox_1.get())
         pday = int(self.rdb.get())
         newdate = self.collectdate()
-        fname = self.create_path()+"\\"+ticket
+        fname = self.create_path()+"\\"+ticket+".txt"
         yf = YahooIndia()
         if ticket == "BankNifty_nse_index":
             df = yf.banknifty(newdate)
