@@ -1288,7 +1288,7 @@ class MainFrame(tk.Frame):
             self.main(nallcls,clp,tt)
         else:
             self.nifty_index(tt)
-            
+
     def click_press(self):
         self.btn_1.config(text="Busy", state="disabled")
         self.btn_1.update()
