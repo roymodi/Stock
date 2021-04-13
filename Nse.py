@@ -40,7 +40,7 @@ class NSE:
             newdt = (fromdate.replace('/', '-')).replace(',', '-')
         return newdt
 
-    @property
+    
     def useragent(self):
         ua = UserAgent()
         hd = ua.ie
@@ -58,7 +58,7 @@ class NSE:
             os.mkdir(create_path)
         except FileExistsError:
             pass
-        h = self.useragent
+        h = self.useragent()
         flist = os.listdir(create_path) # file list
         file = create_path+'\\nseindia' # create file path with name
         if 'nseindia' in flist:
@@ -76,7 +76,7 @@ class NSE:
         create_path = os.path.join(get_path,'Temp_file')
         file = create_path+'\\nseindia'
         c = self.cokie()
-        h = self.useragent
+        h = self.useragent()
         while True:
             try:
                 page1 = requests.get(url, cookies=c, headers=h, timeout=5)
