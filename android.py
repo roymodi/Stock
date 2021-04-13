@@ -18,7 +18,137 @@ from bs4 import BeautifulSoup
 import datetime
 from requests_html import HTMLSession
 
-Builder.load_file('stockapp.kv')
+
+Builder.load_string("""
+#:kivy 1.11.1
+
+<AppLayout>
+    minimum:minimum
+    maximum:maximum
+
+    BoxLayout:
+        orientation: "vertical"
+        size: root.width, root.height
+        spacing : 20
+        padding: 20
+    
+        GridLayout:
+            rows: 1
+            spacing: 10
+            padding: 5
+
+            Spinner:
+                id: spinner_id_stock_list
+                text: "Stock_list_choose"
+                values: ['Nifty_50_stock_list','Top_gainers_stock_list','Top_losers_stock_list','Volume_gainers_stock_list','Most_active_stock_volume_list','Most_active_stock_value_list','Nifty_100_Company_stock_list','Nifty_200_Company_stock_list','Nifty_500_Company_stock_list','Nse_listed_all_Company_list','BankNifty_nse_index','Nifty50_nse_index']
+                # on_text: root.spinner_stock_click(spinner_id_stock_list.text)
+                on_text: spinner_id_stock_list.text
+                size_hint: (0.8,0.2)
+            
+            Spinner:
+                id: spinner_id_range
+                text: "Day range"
+                values: ['0','1','2','3','4','5','6','7','8','9']
+                # on_text: root.spinner_range_click(spinner_id_range.text)
+                on_text: spinner_id_range.text
+                size_hint: (0.2,0.2)
+        
+        GridLayout:
+            rows: 2
+            cols: 4
+            spacing: 10
+            padding: 5
+            
+            Label:
+                text: "Tomorrow: "
+                size_hint: (0.3,0.2)
+
+            CheckBox:
+                group: 'days'
+                on_active: root.day=self.active
+                id: day
+
+            Label:
+                text: "Today: "
+                size_hint: (0.3,0.2)
+            
+            CheckBox:
+                group: 'days'
+                on_active: root.day=self.active
+                id: day
+
+            
+            Label:
+                text: "Intraday: "
+                size_hint: (0.3,0.2)
+
+            CheckBox:
+                group: 'trading'
+                on_active: root.trade=self.active
+                id: trade
+
+            Label:
+                text: "Delivery: "
+                size_hint: (0.3,0.2)
+                
+            CheckBox:
+                group: 'trading'
+                on_active: root.trade=self.active
+                id: trade
+        
+        GridLayout:
+            rows: 1
+            cols: 4
+            spacing: 10
+            padding: 5
+
+            Label:
+                text: 'Minimum value: '
+                size_hint: (0.2,0.2)
+
+            TextInput:
+                id: minimum
+                multiline: False
+                size_hint: (0.2,0.3)
+
+            Label:
+                text: 'Maximum value: '
+                size_hint: (0.2,0.2)
+
+            TextInput:
+                id: maximum
+                multiline: False
+                size_hint: (0.2,0.3)
+
+        GridLayout:
+            rows: 1
+            cols: 2
+            spacing: 10
+            padding: 5
+            
+            ProgressBar:
+                id: progress_bar
+                value: 0
+                min: 0
+                max: 100
+                size_hint: (0.8,0.2)
+            
+            Label:
+                id: progress_label
+                text: ''
+                size_hint: (0.2,0.2)
+        
+        GridLayout:
+            rows: 1
+            cols: 1
+            spacing: 10
+            padding: 5
+
+            Button:
+                text: "Click"
+                size_hint: (0.6,0.2)
+                on_press: root.click_press()
+    """)
 
 class SuperBreakout:
     def __init__(self,dataframe):
@@ -176,7 +306,6 @@ class NSE:
             newdt = (fromdate.replace('/', '-')).replace(',', '-')
         return newdt
 
-    @property
     def useragent(self):
         ua = UserAgent()
         hd = ua.ie
@@ -212,7 +341,7 @@ class NSE:
         create_path = os.path.join(get_path,'Temp_file')
         file = create_path+'\\nseindia'
         c = self.cokie()
-        h = self.useragent
+        h = self.useragent()
         while True:
             try:
                 page1 = requests.get(url, cookies=c, headers=h, timeout=5)
