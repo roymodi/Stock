@@ -232,7 +232,7 @@ def nifty_index(ticket):
     spinbox = int(spbox_1.get())
     pday = int(rdb.get())
     newdate = collectdate()
-    fname = create_path()+"\\"+ticket
+    fname = create_path()+"\\"+ticket+".txt"
     yf = YahooIndia()
     if ticket == "BankNifty_nse_index":
         df = yf.banknifty(newdate)
