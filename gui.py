@@ -312,6 +312,13 @@ def button():
     else:
         nifty_index(tt)
 
+def click():
+    btn_1.config(text="Busy", state="disabled")
+    btn_1.update()
+    button()
+    btn_1.update()
+    btn_1.config(text="Click", state="normal")
+
 
 # frame 1
 window_1 = tk.Frame(window_0)
@@ -406,7 +413,7 @@ lb_4 = tk.Label(window_4,text='')
 lb_4.pack(side= LEFT)
 
 # button
-btn_1 = tk.Button(window_4, text= 'OK', command= button, width= 7)
+btn_1 = tk.Button(window_4, text= 'OK', command= click, width= 7)
 btn_1.pack(side= RIGHT)
 
 

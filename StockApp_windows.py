@@ -8,7 +8,7 @@ from io import StringIO
 
 import pandas as pd
 import datetime
-from requests_html import HTMLSession
+
 import stock_indicator
 import darvasbox
 import stock_range_predction
@@ -19,7 +19,10 @@ from Swing_20days import Swing_20days
 import Turtle_trading
 import SuperBreakout
 
+import requests
+from fake_useragent import UserAgent
 
+"pyinstaller StockApp_windows.py -w --onefile"
 
 class MainFrame(tk.Frame):
     def __init__(self,window,*args,**kwargs):
@@ -109,6 +112,7 @@ class MainFrame(tk.Frame):
         # Frame 6 progress bar percentage
         self.wd6 = tk.Frame(self.window)
         self.wd6.pack()
+        # Button 
         self.btn_1 = tk.Button(self.wd6, text= 'Click', command= self.click_press, width= 10)
         self.btn_1.pack(side= LEFT)
 
@@ -326,13 +330,15 @@ class MainFrame(tk.Frame):
     def nifty_index(self,ticket):
         bank_ = "https://query1.finance.yahoo.com/v7/finance/download/^NSEBANK?period1={dayfrom}&period2={timenow}&interval=1d&events=history&includeAdjustedClose=true"
         nifty_ = "https://query1.finance.yahoo.com/v7/finance/download/^NSEI?period1={dayfrom}&period2={timenow}&interval=1d&events=history&includeAdjustedClose=true"
-        session = HTMLSession()
+        ua = UserAgent()
+        hd = ua.ie
+        header = {'User-Agent': hd}
         spinbox = int(self.spbox_1.get())
         pday = int(self.rdb.get())
         newdate = self.collectdate()
         fname = self.create_path()+"\\"+ticket+".txt"
         if ticket == "BankNifty_nse_index":
-            page = session.get(bank_.format(dayfrom=self.dayfrom(newdate),timenow= self.timenow()))
+            page = requests.get(bank_.format(dayfrom=self.dayfrom(newdate),timenow= self.timenow()),headers=header)
             df = pd.read_csv(StringIO(page.text), parse_dates=["Date"])
             ttday = self.tigger(spinbox,df)
             data = str(self.getdata(df,pday,ttday))
@@ -340,7 +346,7 @@ class MainFrame(tk.Frame):
             newdata = nd[0]+"\n"+nd[1]+"\n\n"+nd[5]+"\n"+nd[6]+"\n"+nd[7]+"\n"+nd[8]+"\n\n"+nd[10]+"\n\n"+nd[14]+"\n\n"+nd[18]+"\n"+nd[19]
             self.writefile(fname,newdata)
         else:
-            page = session.get(nifty_.format(dayfrom=self.dayfrom(newdate),timenow= self.timenow()))
+            page = requests.get(nifty_.format(dayfrom=self.dayfrom(newdate),timenow= self.timenow()),headers=header)
             df = pd.read_csv(StringIO(page.text), parse_dates=["Date"])
             ttday = self.tigger(spinbox,df)
             data = str(self.getdata(df,pday,ttday))
