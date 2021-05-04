@@ -254,15 +254,15 @@ class Moneycontrol:
 # print(mc.livePrice('BHARTIARTL'))
         
 
-import Nse
-nse = Nse.NseData()
-df = nse.nifty_50()
-co_name = df['SYMBOL'].iloc[2:50]
-# print(co_name)
-mc = Moneycontrol()
-for x in co_name:
-    print(x)
-    print(x,' = ',mc.livePrice(x))
+# import Nse
+# nse = Nse.NseData()
+# df = nse.nifty_50()
+# co_name = df['SYMBOL'].iloc[2:50]
+# # print(co_name)
+# mc = Moneycontrol()
+# for x in co_name:
+#     print(x)
+#     print(x,' = ',mc.livePrice(x))
 
 
 
