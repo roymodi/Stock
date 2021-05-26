@@ -137,24 +137,22 @@ class DarvasBox:
                 pass
             count += 1
         return mainlis,pricelis
-    
+
     def days(self):
-        wkl = (self.main(self.value(self.high)))[0]
+        wkl = (self.main(self.value(self.close)))[0]
         lswkln = len(wkl[-1])
-        prwkln = len((self.main(self.value(self.high)))[1])
+        prwkln = len((self.main(self.value(self.close)))[1])
         return lswkln,prwkln
 
     def box(self):
-        high_tup = self.main(self.value(self.high))
-        high_1st = round((max((high_tup[0])[-1])),2)
-        high_2nd = round((max(high_tup[1])),2)
+        close_val = self.main(self.value(self.close))
 
-        low_tup = self.main(self.value(self.low))
-        low_1st = round((min((low_tup[0])[-1])),2)
-        low_2nd = round((min(low_tup[1])),2)
+        high_1st = round((max((close_val[0])[-1])),2)
+        high_2nd = round((max(close_val[1])),2)
+
+        low_1st = round((min((close_val[0])[-1])),2)
+        low_2nd = round((min(close_val[1])),2)
         
         main_dict = dict(Darvas_High=high_1st,Darvas_Low=low_1st)
         sub_dict = dict(Presend_week_High=high_2nd,Presend_week_Low=low_2nd)
         return main_dict,sub_dict
-
-        
