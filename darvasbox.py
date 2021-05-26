@@ -9,8 +9,7 @@ class DarvasBox:
         reversdf = newdf[::-1].reset_index(drop=True)
         self.df = reversdf
         self.date = self.df['Date']
-        self.high = self.df['High']
-        self.low = self.df['Low']
+        self.close = self.df['Close']
 
     def value(self,df_value):
         try:
