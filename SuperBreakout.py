@@ -3,7 +3,7 @@ class SuperBreakout:
     def __init__(self,dataframe):
         self.si = stock_indicator.Indicator(dataframe)
         self.df = dataframe
-    def filter(self,df_value):
+    def filter_(self,df_value):
         try:
             value_str=df_value.str.replace(",","") # this is for remove , 
             value_float= value_str.astype(float)    # thid is for string to float value convert
@@ -13,7 +13,7 @@ class SuperBreakout:
         return value
 
     def breakout(self):
-        dataframe = self.filter(self.df["Close"])
+        dataframe = self.filter_(self.df["Close"])
         lcp = dataframe.iloc[-1]
         d5 = self.si.sma(5)
         d10 = self.si.sma(10)
