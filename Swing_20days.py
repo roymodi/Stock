@@ -15,8 +15,8 @@ class Swing_20days:
     def swing(self,Close_price):
         si = stock_indicator.Indicator(self.df)
         dma_200 = si.sma(200)
-        low = list(self.value(self.newdf["Low"]))
-        high = list(self.value(self.newdf["High"]))
+        low = list(self.value(self.newdf["Close"]))
+        high = list(self.value(self.newdf["Close"]))
         low_min = min(low)
         high_max = max(high)
         if Close_price >= high_max and Close_price >= dma_200:

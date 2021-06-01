@@ -5,7 +5,7 @@ class Turtle:
         self.df = dataframe.iloc[::-1].reset_index(drop=True)
         self.df_55 = self.df.iloc[0:55]
         self.df_20 = self.df.iloc[0:20]
-        self.lst_low = float((str(dataframe["Low"].iloc[-1])).replace(',',''))
+        self.lst_low = float((str(dataframe["Close"].iloc[-1])).replace(',',''))
         self.si = stock_indicator.Indicator(dataframe)
 
     def filter(self,df_value):
@@ -26,8 +26,8 @@ class Turtle:
     def turtle(self,current_price):
         dma_200 = self.si.sma(200)
         dma_50 = self.si.sma(50)
-        low = list(self.filter(self.df_20["Low"]))
-        high = list(self.filter(self.df_55["High"]))
+        low = list(self.filter(self.df_20["Close"]))
+        high = list(self.filter(self.df_55["Close"]))
         low_min = min(low)
         high_max = max(high)
         per_10 = self.percent(10,high_max)
