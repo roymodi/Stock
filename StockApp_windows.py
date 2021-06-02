@@ -205,7 +205,8 @@ class MainFrame(tk.Frame):
         tutd = tt.turtle(ls_cp)
         sb = SuperBreakout.SuperBreakout(df)
         bk = sb.breakout()
-        rt = 'Last_Open_price: '+str(round((ls_op),2))+',   Last_Close_price: '+\
+        pre_clp = float((str(df['Close'].iloc[-2])).replace(',',''))
+        rt = 'PreviousClose: '+str(round((pre_clp),2))+'\n'+'Last_Open_price: '+str(round((ls_op),2))+',   Last_Close_price: '+\
         str(round((ls_cp),2))+'\n'+'Last_High_price:  '+str(round((ls_hi),2))+\
         '   Last_Low_price:  '+str(round((ls_lo),2))+'\n\n'+voldata1+voldata2+\
         '\n\n'+'Pivot_point: '+str(ppdata)+'\n\n'+'Stock_range: '+str(srp_)+'\n\n'+\
