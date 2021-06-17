@@ -8,7 +8,7 @@ class Turtle:
         self.lst_low = float((str(dataframe["Close"].iloc[-1])).replace(',',''))
         self.si = stock_indicator.Indicator(dataframe)
 
-    def filter(self,df_value):
+    def filter_(self,df_value):
         try:
             value_str=df_value.str.replace(",","") # this is for remove , 
             value_float= value_str.astype(float)    # thid is for string to float value convert
@@ -26,8 +26,8 @@ class Turtle:
     def turtle(self,current_price):
         dma_200 = self.si.sma(200)
         dma_50 = self.si.sma(50)
-        low = list(self.filter(self.df_20["Close"]))
-        high = list(self.filter(self.df_55["Close"]))
+        low = list(self.filter_(self.df_20["Close"]))
+        high = list(self.filter_(self.df_55["Close"]))
         low_min = min(low)
         high_max = max(high)
         per_10 = self.percent(10,high_max)
