@@ -6,6 +6,9 @@ import darvasbox
 import datetime
 import pandas as pd
 
+"pyinstaller stock_delivery.py -w --onefile"
+
+
 class Trading:
     def __init__(self,dataframe,profit_val):
         self.pf_val = float(profit_val)
