@@ -5,6 +5,7 @@ import Nse
 import darvasbox
 import datetime
 import pandas as pd
+import os
 
 "pyinstaller stock_delivery.py -w --onefile"
 
@@ -169,7 +170,15 @@ class MainFrame(tk.Frame):
             self.frm5.update_idletasks()
         data = {'Company':stocklist,'Close_price':closepricelist,'Buy_position':buylist,'Terget_position':tergetlist}
         newdf = pd.DataFrame(data)
-        newdf.to_csv((title+'_'+theroy+'.csv'),index=False)    
+        today = str(datetime.date.today())
+        c_dir = os.getcwd()
+        f_path = os.path.join(c_dir,'Delivery')
+        try:
+            os.mkdir(f_path)
+        except:
+            pass
+        f_name = f_path+'\\'+title+'_'+theroy+'_'+today+'.csv'
+        newdf.to_csv(f_name,index=False)    
     def collectdate(self):
         # collect date one year before
         dt = datetime.datetime.now()
