@@ -54,7 +54,7 @@ class MainFrame(tk.Frame):
         self.frm1 = tk.Frame(self.window)
         self.frm1.pack()
         # Label 1
-        self.lbl1 = tk.Label(self.frm1,text='Nse Catagory : ')
+        self.lbl1 = tk.Label(self.frm1,text='Catagory / Name : ')
         self.lbl1.pack(side= LEFT)
         # Combobox
         self.cmvar1 = tk.StringVar()
@@ -129,7 +129,7 @@ class MainFrame(tk.Frame):
         self.btn1.config(text='Click',state='normal')
         self.btn1.update()
     
-    def main(self,cmplist,clplist,title):
+    def main(self,cmplist,title):
         nse = Nse.NSE()
         profit = self.ent1.get()
         theroy = self.cmvar2.get()
@@ -192,58 +192,49 @@ class MainFrame(tk.Frame):
         tt = self.cmvar1.get()
         if tt == 'Nifty_50_stock_list':
             n50 = nse.nifty_50()
-            n50clp = n50['Adj Close'].iloc[1:51]
             n50list = n50['SYMBOL'].iloc[1:51]
-            self.main(n50list,n50clp,tt)
+            self.main(n50list,tt)
         elif tt == 'Top_gainers_stock_list':
             tg = nse.gainers()
-            tgclp = tg['Prev. Close'].iloc[0:20]
             tglist = tg['Symbol'].iloc[0:20]
-            self.main(tglist,tgclp,tt)
+            self.main(tglist,tt)
         elif tt == 'Top_losers_stock_list':
             tl = nse.losers()
-            tlclp = tl['Prev. Close'].iloc[0:15]
             tllist = tl['Symbol'].iloc[0:15]
-            self.main(tllist,tlclp,tt)
+            self.main(tllist,tt)
         elif tt == 'Volume_gainers_stock_list':
             tvg = nse.volume_gainers()
-            tvgclp = None
             tvglist = tvg['SYMBOL'].iloc[0:25]
-            self.main(tvglist,tvgclp,tt)
+            self.main(tvglist,tt)
         elif tt == 'Most_active_stock_volume_list':
             masvol = nse.most_active_stock_volume()
-            masvolcpl = masvol['Adj Close'].iloc[0:20]
             masvollist = masvol['SYMBOL'].iloc[0:20]
-            self.main(masvollist,masvolcpl,tt)
+            self.main(masvollist,tt)
         elif tt == 'Most_active_stock_value_list':
             masval = nse.most_active_stock_value()
-            masvalclp = masval['Adj Close'].iloc[0:20]
             masvallist = masval['SYMBOL'].iloc[0:20]
-            self.main(masvallist,masvalclp,tt)
+            self.main(masvallist,tt)
         elif tt == 'Nifty_100_Company_stock_list':
             n100 = nse.nifty_100()
             n100.dropna(subset=['SYMBOL','Adj Close'])
             n100ls = n100['SYMBOL'].iloc[0:101]
-            n100clp = n100['Adj Close'].iloc[0:101]
-            self.main(n100ls,n100clp,tt)
+            self.main(n100ls,tt)
         elif tt == 'Nifty_200_Company_stock_list':
             n200 = nse.nifty_200()
             n200.dropna(subset=['SYMBOL','Adj Close'])
             n200ls = n200['SYMBOL'].iloc[0:201]
-            n200clp = n200['Adj Close'].iloc[0:201]
-            self.main(n200ls,n200clp,tt)
+            self.main(n200ls,tt)
         elif tt == 'Nifty_500_Company_stock_list':
             n500 = nse.nifty_500()
             n500ls = n500['Symbol'].iloc[0:501]
-            clp = None
-            self.main(n500ls,clp,tt)
+            self.main(n500ls,tt)
         elif tt == 'Nse_listed_all_Company_list':
             nallc = nse.nse_listed_company()
             nallcls = nallc['SYMBOL']
-            clp = None
-            self.main(nallcls,clp,tt)
+            self.main(nallcls,tt)
         else:
-            self.nifty_index(tt)
+            co_name = [(self.cmvar1.get()).upper()]
+            self.main(co_name,title=co_name[0])
         
 class App(tk.Tk):
     def __init__(self):
