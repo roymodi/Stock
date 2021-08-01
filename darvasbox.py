@@ -5,7 +5,7 @@ import calendar
 class DarvasBox:
     def __init__(self, dataframe):
         dataframe.dropna(inplace=True)
-        newdf = (dataframe[::-1].reset_index(drop=True)).iloc[0:100]
+        newdf = (dataframe[::-1].reset_index(drop=True))#.iloc[0:100]
         reversdf = newdf[::-1].reset_index(drop=True)
         self.df = reversdf
         self.date = self.df['Date']
