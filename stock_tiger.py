@@ -18,7 +18,7 @@ class MainFrame(tk.Frame):
         self.wd2.pack()
         self.button = tk.Button(self.wd2,text= 'Click',command=self.main,width=5)
         self.button.pack(side= LEFT)
-       
+         
 
     def main(self):
         try:
@@ -44,7 +44,7 @@ class MainFrame(tk.Frame):
                 h_value = ((si['Price_Info'])['intraDayHighLow'])['max']
                 bp_value = df['Buy_position'].iloc[count]
                 if bp_value <= h_value:
-                    data[x]= bp_value
+                    data[x]= h_value
                 self.label.config(text=str(count))
                 print(count)
                 count +=1
