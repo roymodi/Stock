@@ -74,7 +74,7 @@ class MainFrame(tk.Frame):
                     no+=1
         except:
             self.label.config(text='Error')
-            print('Fils not found')
+            print('Error')
 
 class App(tk.Tk):
     def __init__(self):
