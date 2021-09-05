@@ -179,9 +179,6 @@ class MainFrame(tk.Frame):
         m_i = srp.market_immotion()
         si = stock_indicator.Indicator(df)
         dma = si.sma(200)
-        ema8 = si.ema(8)
-        ema20 = si.ema(20)
-        ema50 = si.ema(50)
         rsi_ = si.rsi(14)
         macd_ = si.macd()
         b_bands = si.bollinger_bands()
@@ -209,9 +206,7 @@ class MainFrame(tk.Frame):
         rt = 'PreviousClose: '+str(round((pre_clp),2))+'\n'+'Last_Open_price: '+str(round((ls_op),2))+',   Last_Close_price: '+\
         str(round((ls_cp),2))+'\n'+'Last_High_price:  '+str(round((ls_hi),2))+\
         '   Last_Low_price:  '+str(round((ls_lo),2))+'\n\n'+voldata1+voldata2+\
-        '\n\n'+'Pivot_point: '+str(ppdata)+'\n\n'+'Stock_range: '+str(srp_)+'\n\n'+\
-        'EMA(8): '+str(ema8)+',  EMA(20): '+str(ema20)+',  EMA(50): '+str(ema50)+"  200_DMA: "+str(dma)+\
-        ',   RSI: '+str(rsi_)+'\n\n'+'DarvasBox: '+str(db_)+'\n\n'+'Bollinger_bands: '+\
+        '\n\n'+'Pivot_point: '+str(ppdata)+'\n\n'+'Stock_range: '+str(srp_)+'\n\n'+"200_DMA: "+str(dma)+',   RSI: '+str(rsi_)+'\n\n'+'DarvasBox: '+str(db_)+'\n\n'+'Bollinger_bands: '+\
         str(b_bands)+'\n\n'+'Macd: '+macd_+'\n'+'Market_immotion :'+m_i+'\n\nSwing_trading: \n'+\
         str(sw_val)+'\n\n'+"Turtle_trading: \n"+str(tutd)+'\n\n'+"Super_Breakout: \n"+str(bk)
         return rt
