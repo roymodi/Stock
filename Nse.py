@@ -86,9 +86,6 @@ class NSE:
         Trry = 0
         while True:
             print('nse_try',Trry)
-            if Trry > 7:
-                os.remove(file)
-                self.cokie()
             try:
                 page1 = requests.get(url, cookies=c, headers=h, timeout=10)
                 if str(page1)=='<Response [401]>':

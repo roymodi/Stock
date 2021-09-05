@@ -38,7 +38,12 @@ class Trading:
     def Darvasbox(self):
         db = darvasbox.DarvasBox(self.rawdf)
         box = db.box()
-        dHigh = (box[0])['Darvas_High']
+        today = datetime.datetime.now()
+        day = today.strftime("%A")
+        if day == 'Thursday':
+            dHigh = (box[1])['Presend_week_High']
+        else:
+            dHigh = (box[0])['Darvas_High']
         terget = self.profit(dHigh)
         close = self.close_price
         return dHigh,terget,close
