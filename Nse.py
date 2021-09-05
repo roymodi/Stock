@@ -42,8 +42,14 @@ class NSE:
 
     
     def useragent(self):
-        ua = UserAgent()
-        hd = ua.ie
+        # ua = UserAgent()
+        # hd = ua.ie
+        try:
+            ua = UserAgent()
+            hd = ua.ie
+        except:
+            hd = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:90.0) Gecko/20100101 Firefox/90.0"}
+            
         header = {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
                   'Accept-Encoding': 'gzip, deflate, br', 'Accept-Language': 'en-US,en;q=0.5',
                   'Cache-Control': 'max-age=0', 'Connection': 'keep-alive', 'Host': 'www.nseindia.com',
@@ -77,7 +83,10 @@ class NSE:
         file = create_path+'\\nseindia'
         c = self.cokie()
         h = self.useragent()
+        Trry = 0
         while True:
+            if Trry == 5:
+                break
             try:
                 page1 = requests.get(url, cookies=c, headers=h, timeout=5)
                 if str(page1)=='<Response [401]>':
@@ -90,6 +99,7 @@ class NSE:
                     break
             except:
                 pass
+            Trry+=1
         return page
 
     def stock_info(self, ticket):
