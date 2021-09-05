@@ -85,14 +85,16 @@ class NSE:
         h = self.useragent()
         Trry = 0
         while True:
-            if Trry == 5:
-                break
+            print('nse_try',Trry)
+            if Trry > 7:
+                os.remove(file)
+                self.cokie()
             try:
-                page1 = requests.get(url, cookies=c, headers=h, timeout=5)
+                page1 = requests.get(url, cookies=c, headers=h, timeout=10)
                 if str(page1)=='<Response [401]>':
                     os.remove(file)
                     c2 = self.cokie()
-                    page = requests.get(url, cookies=c2, headers=h, timeout=5)
+                    page = requests.get(url, cookies=c2, headers=h, timeout=10)
                     break
                 else:
                     page = page1

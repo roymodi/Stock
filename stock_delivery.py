@@ -44,6 +44,20 @@ class Trading:
         return dHigh,terget,close
     def turtle_trading(self):
         pass
+    def dma200(self):
+        cls = self.df['Close'].iloc[0:200]
+        filcls = self.value(cls)
+        avgcls = round((sum(filcls)/len(filcls)),2)
+        return avgcls
+    def year_def(self,ticket):
+        ns = Nse.NSE()
+        pi = ns.stock_info(ticket)
+        yhl = (pi['Price_Info'])['weekHighLow']
+        mx = float((str(yhl['max'])).replace(',',''))
+        mn = float((str(yhl['min'])).replace(',',''))
+        result = str(round((mx/mn),2))
+        return result
+
 
 class MainFrame(tk.Frame):
     def __init__(self,window,*args,**kwargs):
@@ -137,6 +151,8 @@ class MainFrame(tk.Frame):
         buylist = []
         tergetlist = []
         closepricelist = []
+        dmalist = []
+        ydflist = []
         filen = len(cmplist)
         count = filen
         for x in cmplist:
@@ -147,19 +163,26 @@ class MainFrame(tk.Frame):
             else:
                 if theroy == 'Swing_20_days':
                     sw = Trading(df,profit)
+                    dma = sw.dma200()
+                    ydf = sw.year_def(x)
                     swval = sw.swing_20days()
                     stocklist.append(x)
                     buylist.append(swval[0])
                     tergetlist.append(swval[1])
                     closepricelist.append(swval[2])
+                    dmalist.append(dma)
+                    ydflist.append(ydf)
                 elif theroy == 'Darvasbox_trading':
                     db = Trading(df,profit)
+                    dma = db.dma200()
                     dbval = db.Darvasbox()
+                    ydf = db.year_def(x)
                     stocklist.append(x)
                     buylist.append(dbval[0])
                     tergetlist.append(dbval[1])
                     closepricelist.append(dbval[2])
-                    pass
+                    dmalist.append(dma)
+                    ydflist.append(ydf)
                 elif theroy == 'Turtle_trading':
                     pass
                 else:
@@ -168,7 +191,7 @@ class MainFrame(tk.Frame):
             self.ent2.insert(0,str(round((((filen-count)+1)*(100/filen))))+'%')
             self.progress['value']=round((((filen-count)+1)*(100/filen)),2)
             self.frm5.update_idletasks()
-        data = {'Company':stocklist,'Close_price':closepricelist,'Buy_position':buylist,'Terget_position':tergetlist}
+        data = {'Company':stocklist,'Close_price':closepricelist,'Buy_position':buylist,'Terget_position':tergetlist,'200_Dma':dmalist,'Year_def.':ydflist}
         newdf = pd.DataFrame(data)
         today = str(datetime.date.today())
         c_dir = os.getcwd()
