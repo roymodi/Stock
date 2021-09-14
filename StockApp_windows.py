@@ -410,7 +410,7 @@ class MainFrame(tk.Frame):
             nallcls = nallc['SYMBOL']
             clp = None
             self.main(nallcls,clp,tt)
-        elif (tt == 'BankNifty_nse_index') or (tt == 'Nifty50_nse_index'):
+        elif (tt == 'BankNifty_nse_index')or(tt == 'Nifty50_nse_index'):
             self.nifty_index(tt)
         else:
             co_name = [self.cmbovr.get().upper()]
