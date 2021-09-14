@@ -410,11 +410,18 @@ class MainFrame(tk.Frame):
             nallcls = nallc['SYMBOL']
             clp = None
             self.main(nallcls,clp,tt)
-        else:
+        elif (tt == 'BankNifty_nse_index') or (tt == 'Nifty50_nse_index'):
             self.nifty_index(tt)
+        # elif tt == 'Nifty50_nse_index':
+        #     self.nifty_index(tt)
+        else:
+            co_name = [self.cmbovr.get().upper()]
+            self.main(file=co_name,nsclp=None,tt=co_name[0])
 
     def click_press(self):
         self.btn_1.config(text="Busy", state="disabled")
+        self.barlabl.delete(0,'end')
+        self.progress['value']=0
         self.btn_1.update()
         self.click()
         self.btn_1.update()
