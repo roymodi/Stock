@@ -8,6 +8,7 @@ class DarvasBox:
         newdf = (dataframe[::-1].reset_index(drop=True))#.iloc[0:100]
         reversdf = newdf[::-1].reset_index(drop=True)
         self.df = reversdf
+        self.df.dropna(subset=['Close'],inplace=True)
         self.date = self.df['Date']
         self.close = self.df['Close']
 

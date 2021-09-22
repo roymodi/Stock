@@ -15,6 +15,7 @@ class Trading:
         self.pf_val = float(profit_val)
         self.rawdf = dataframe
         self.df = dataframe.iloc[::-1].reset_index(drop=True)
+        self.df.dropna(subset=['Close'],inplace=True)
         self.close_price = float((str(self.df['Close'].iloc[0])).replace(',',''))
     def value(self,df_value):
         try:
@@ -29,7 +30,7 @@ class Trading:
         rcal = round(cal,2)
         return rcal
     def swing_20days(self):
-        high = self.df['High'].iloc[0:20]
+        high = self.df['Close'].iloc[0:20]
         hval = self.value(high)
         buy_val = max(hval)
         terget = self.profit(buy_val)  #((buy_val/100)*pro_val)+buy_val
