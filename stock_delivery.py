@@ -29,10 +29,17 @@ class Trading:
         cal = ((mval/100)*self.pf_val)+mval
         rcal = round(cal,2)
         return rcal
-    def swing_20days(self):
+    def swing_20days_High(self):
         high = self.df['Close'].iloc[0:20]
         hval = self.value(high)
         buy_val = max(hval)
+        terget = self.profit(buy_val)  #((buy_val/100)*pro_val)+buy_val
+        close = self.close_price
+        return buy_val,terget,close
+    def swing_20days_Low(self):
+        Low = self.df['Low'].iloc[0:20]
+        hval = self.value(Low)
+        buy_val = min(hval)
         terget = self.profit(buy_val)  #((buy_val/100)*pro_val)+buy_val
         close = self.close_price
         return buy_val,terget,close
@@ -49,7 +56,12 @@ class Trading:
         close = self.close_price
         return dHigh,terget,close
     def turtle_trading(self):
-        pass
+        cls = self.df['Close'].iloc[0:55]
+        hval = self.value(cls)
+        buy_val = max(hval)
+        terget = self.profit(buy_val)  #((buy_val/100)*pro_val)+buy_val
+        close = self.close_price
+        return buy_val,terget,close
     def dma200(self):
         cls = self.df['Close'].iloc[0:200]
         filcls = self.value(cls)
@@ -104,7 +116,8 @@ class MainFrame(tk.Frame):
         self.cmvar2 = tk.StringVar()
         self.combox2 = ttk.Combobox(self.frm2,width=25,textvariable=self.cmvar2)
         self.combox2['values']=(
-            'Swing_20_days',
+            'Swing_20_days_High',
+            'Swing_20_days_Low',
             'Darvasbox_trading',
             'Turtle_trading'
         )
@@ -167,11 +180,22 @@ class MainFrame(tk.Frame):
             if df.empty:
                 pass
             else:
-                if theroy == 'Swing_20_days':
+                if theroy == 'Swing_20_days_High':
                     sw = Trading(df,profit)
                     dma = sw.dma200()
                     ydf = sw.year_def(x)
-                    swval = sw.swing_20days()
+                    swval = sw.swing_20days_High()
+                    stocklist.append(x)
+                    buylist.append(swval[0])
+                    tergetlist.append(swval[1])
+                    closepricelist.append(swval[2])
+                    dmalist.append(dma)
+                    ydflist.append(ydf)
+                elif theroy == 'Swing_20_days_Low':
+                    sw = Trading(df,profit)
+                    dma = sw.dma200()
+                    ydf = sw.year_def(x)
+                    swval = sw.swing_20days_Low()
                     stocklist.append(x)
                     buylist.append(swval[0])
                     tergetlist.append(swval[1])
@@ -190,7 +214,16 @@ class MainFrame(tk.Frame):
                     dmalist.append(dma)
                     ydflist.append(ydf)
                 elif theroy == 'Turtle_trading':
-                    pass
+                    db = Trading(df,profit)
+                    dma = db.dma200()
+                    dbval = db.turtle_trading()
+                    ydf = db.year_def(x)
+                    stocklist.append(x)
+                    buylist.append(dbval[0])
+                    tergetlist.append(dbval[1])
+                    closepricelist.append(dbval[2])
+                    dmalist.append(dma)
+                    ydflist.append(ydf)
                 else:
                     pass
             count-=1
