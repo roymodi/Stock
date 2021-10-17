@@ -58,9 +58,13 @@ class YahooIndia:
         dfrom = str(int((now - dt).timestamp()))
         return dfrom
 
-    def historydata(self, stock, dd_mm_yy):
+    def historydata(self, stock, dd_mm_yy,tnow=None):
+        if tnow == None:
+            tnow = self.timenow()
+        else:
+            tnow = self.dayfrom(tnow)
         stock = (stock.upper()) + ".NS"
-        file_ = self.web(self.history_url.format(stock, dayfrom=self.dayfrom(dd_mm_yy), timenow=self.timenow()))
+        file_ = self.web(self.history_url.format(stock, dayfrom=self.dayfrom(dd_mm_yy), timenow=tnow))
         dataframe = pd.read_csv(StringIO(file_.text), parse_dates=["Date"])
         return dataframe
     
