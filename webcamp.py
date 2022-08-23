@@ -1,4 +1,5 @@
 import cv2
+# pip install opencv-python  
 
 #camp = 'http://192.168.43.1:4747/video'
 camp = "http://192.168.137.144:4747/video"
